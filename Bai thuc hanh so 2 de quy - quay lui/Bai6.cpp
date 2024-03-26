@@ -7,7 +7,7 @@ void chuyenDia(stack<int>& src, stack<int>& des, char s, char d){
     int top = src.top();    // dia o phia tren cung cua cot nguon
     src.pop();  // lay dia o phia tren cung 
     des.push(top);  // di chuyen de tren cung tu cot nguon sang cot dich
-    cout << "Di chuyen " << top << " dia tu cot " << s << " sang cot " << d <<endl;
+    cout << "Di chuyen dia " << top << " tu " << s << " sang " << d <<endl;
 }
 
 void hanoi_Towel(int n){
@@ -28,7 +28,7 @@ void hanoi_Towel(int n){
     int total_moves = pow(2, n) - 1;
 
     // Di chuyen dia
-    for(int i=1; i<=total_moves; ++i){
+    for(int i=1; i<=total_moves; i++){
         if(i % 3 == 1) {
             chuyenDia(A, C, src, des);
         } else if (i % 3 == 2) {
