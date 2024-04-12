@@ -43,6 +43,8 @@ void next_config(int x[], int n, int i){
     swap(x[k], x[i]);
 
     int j = n; i++;
+
+    // dao nguoc doan cuoi giam dan -> tang dan
     while(i < j) {
         swap(x[i], x[j]);
         i++; j--;
@@ -62,6 +64,8 @@ void list_config(int n, char G[], string N[]) {
     do {
         view_config(x, n, G, N);
         i = n-1;
+
+        // tim phan tu x[i] lien truoc doan cuoi giam dan
         while(i > 0 && x[i] > x[i+1]) {
             i--;
         }
