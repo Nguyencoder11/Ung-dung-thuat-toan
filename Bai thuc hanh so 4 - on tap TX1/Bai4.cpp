@@ -25,8 +25,85 @@ chuyến bay và số ghế ngồi.
 #include<bits/stdc++.h>
 using namespace std;
 
+struct Flight{
+    string soHieu;
+    long giaVe;
+    int soGhe;
+};
 
+void hienthi(Flight b[], int n) {
+    cout << setw(10) << "So hieu" << setw(15) << "Gia ve" << setw(12) << "So ghe" << endl;
+    for(int i=0; i<n; i++){
+        cout << setw(10) << b[i].soHieu << setw(15) << b[i].giaVe << setw(12) << b[i].soGhe << endl;
+    }
+}
+
+// Ham bieu dien thuat toan A1
+void hienThiGiaVeTren700000(Flight b[], int n, int i=0) {
+    if(i==n) return;
+    if(b[i].giaVe > 700000) {
+        cout << setw(10) << b[i].soHieu << setw(15) << b[i].giaVe << setw(12) << b[i].soGhe << endl;
+    }
+    hienThiGiaVeTren700000(b, n, i+1);
+}
+
+// Ham bieu dien thuat toan A2
+Flight chuyenBayGiaVeThapNhat(Flight b[], int l, int r) {
+    if(l == r) return b[l];
+
+    int mid = l + (r-l)/2;
+
+    Flight left = chuyenBayGiaVeThapNhat(b, l, mid);
+    Flight right = chuyenBayGiaVeThapNhat(b, mid+1, r);
+
+    return (left.giaVe < right.giaVe) ? left : right;
+}
+
+// Ham bieu dien thuat toan A3
+void backTrackFlight(Flight b[], int n, vector<Flight>& selectedFlights, int start=0){
+    // Neu da du 4 chuyen bay thi hien thi len man hinh
+    if(selectedFlights.size() == 4){
+        cout << "Phuong an chon 4 chuyen bay: " << endl;
+        cout << setw(10) << "So hieu" << setw(15) << "Gia ve" << setw(12) << "So ghe" << endl;
+        for(const auto& flight : selectedFlights) {
+            cout << setw(10) << flight.soHieu << setw(15) << flight.giaVe << setw(12) << flight.soGhe << endl;
+        }
+        cout << endl;
+        return;
+    }
+
+    for(int i=start; i<n; i++) {
+        selectedFlights.push_back(b[i]);
+        backTrackFlight(b, n, selectedFlights, i+1);
+        selectedFlights.pop_back();
+    }
+}
 
 int main(){
-    
+    int n;
+    Flight b[6] = {
+        {"VN01", 700000, 100},
+        {"VN02", 600000, 90},
+        {"VN03", 800000, 70},
+        {"VN04", 200000, 80},
+        {"VN05", 500000, 95},
+        {"VN06", 900000, 85}
+    };
+    n = sizeof(b)/sizeof(b[0]);
+
+    cout << "===== DANH SACH CAC CHUYEN BAY =====" << endl;
+    hienthi(b, n);
+
+
+    cout << "\n===== CAC CHUYEN BAY CO GIA VE TREN 700000 =====" << endl;
+    hienThiGiaVeTren700000(b, n);
+
+    cout << "\n===== CHUYEN BAY CO GIA VE THAP NHAT =====" << endl;
+    Flight minFlight = chuyenBayGiaVeThapNhat(b, 0, n-1);
+    cout << setw(10) << "So hieu" << setw(15) << "Gia ve" << setw(12) << "So ghe" << endl;
+    cout << setw(10) << minFlight.soHieu << setw(15) << minFlight.giaVe << setw(12) << minFlight.soGhe << endl;
+
+    cout << "\n===== CACH CHON 4 CHUYEN BAY TU DANH SACH =====" << endl;
+    vector<Flight> selectedFlights;
+    backTrackFlight(b, n, selectedFlights);
 }

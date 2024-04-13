@@ -14,8 +14,8 @@ hình tất cả các cách lấy 6 ký tự trong danh sách S.
 #include<bits/stdc++.h>
 using namespace std;
 
-int x[7];
-int dd[7] = {0};
+int x[6];
+int dd[6] = {0};
 
 // Thuat toan A3 - liet ke cac tap con
 void view_config(int x[], int k, char S[]) {
@@ -63,7 +63,7 @@ void backTracking(int trial, int k, int n, int dd[], char S[]){
     for(int i=1; i<=n; i++){
         if(dd[i] == 0){
             x[trial] = i;
-            if(trial == k) {
+            if(trial > k) {
                 view_config(x, k ,S);
             }else{
                 dd[i] = 1;
