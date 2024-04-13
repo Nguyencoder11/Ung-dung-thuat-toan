@@ -61,7 +61,26 @@ int demSoCongViec(CongViec c[], int l, int r){
 }
 
 // Ham bieu dien thuat toan A3
+void backTrackPhanViec(CongViec c[], string L[], int n, int *isArranged, vector<pair<string, string>>& assignedJobs, int start=0){
+    if(start == n){
+        cout << "Phuong an giao viec:" << endl;
+        for (auto p : assignedJobs) {
+            cout << p.first << " - " << p.second << endl;
+        }
+        cout << endl;
+        return;
+    }
 
+    for(int i=0; i<n; i++){
+        if(isArranged[i] == 0){
+            isArranged[i]=1;
+            assignedJobs.push_back({c[start].maCV, L[i]});
+            backTrackPhanViec(c, L, n, isArranged, assignedJobs, start+1);
+            isArranged[i] = 0;
+            assignedJobs.pop_back();
+        }
+    }
+}
 
 
 
@@ -85,6 +104,9 @@ int main(){
 
     cout << "\nSo cong viec co thoi gian hoan thanh duoi 30 phut: " << demSoCongViec(c, 0, n-1); 
 
+    int isArranged[6] = {0};
+    vector<pair<string, string>> assignedJobs;
     cout << "\n===== CAC PHUONG AN GIAO VIEC CHO NHAN VIEN =====" << endl;
+    backTrackPhanViec(c, L, n, isArranged, assignedJobs);
 
 }
