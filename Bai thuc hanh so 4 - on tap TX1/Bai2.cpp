@@ -59,20 +59,17 @@ void list_config(int k, int n, char S[]){
 
 
 // Thuat toan A4 - quay lui
-void backTracking(int trial, int k, int n, int dd[], char S[]){
-    for(int i=1; i<=n; i++){
-        if(dd[i] == 0){
-            x[trial] = i;
-            if(trial > k) {
-                view_config(x, k ,S);
-            }else{
-                dd[i] = 1;
-                backTracking(trial+1, k, n, dd, S);
-                dd[i] = 0;
-            }
+void backTracking(int trial, int k, int n, char S[]){
+    for(int i=x[trial-1]+1; i<=n-(k - trial); i++){
+        x[trial] = i;
+        if(trial == k) {
+            view_config(x, k ,S);
+        }else{
+            backTracking(trial+1, k, n, S);
         }
     }
 }
+
 
 
 int main() {
@@ -84,5 +81,5 @@ int main() {
     list_config(k, n, S);
 
     cout << "\n===== Liet ke thi thuat toan A4 =====" << endl;
-    backTracking(1, k, n, dd, S);
+    backTracking(1, k, n, S);
 }
