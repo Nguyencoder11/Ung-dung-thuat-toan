@@ -20,10 +20,10 @@ Yêu cầu thực hiện:
 */
 
 pair<int, vector<int>> knapsack(int m, int n, vector<int>& weights, vector<int>& values){
-    // khoi tao bang phuong an
+    // khoi tao bang DP
     vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
 
-    // xay dung bang phuong an
+    // xay dung bang DP
     for(int i=1; i<=n; i++){
         for(int w=0; w<=m; w++){
             if(weights[i-1] <= w){
@@ -34,7 +34,7 @@ pair<int, vector<int>> knapsack(int m, int n, vector<int>& weights, vector<int>&
         }
     }
 
-    // truy vet tim danh sach cac goi hang
+    // truy vet tim danh sach cac goi hang da chon
     int res = dp[n][m];
     int w = m;
     vector<int> selected_item;
