@@ -25,6 +25,108 @@ T hay không?
 - Sử dụng hàm F4 để tính và trả về s và t. Thông báo kết quả
 */
 
-int main(){
+struct Laptop {
+    string brand;
+    string config;
+    int price;
+};
 
+int BoyerMooreHorspool(const string &p, const string &t){
+    int m = p.length();
+    int n = t.length();
+    if(m > n) return -1;
+
+    int i=0;
+    while(i++ <= n-m){
+        int j = m - 1;
+        while(j>=0 && p[j] == t[i+j]){
+            j--;
+        }
+        if(j < 0) return i;
+    }
+
+    return -1;
+}
+
+
+int F3(const vector<Laptop> &laptops){
+    int r = 0;
+    for(Laptop laptop : laptops){
+        if(BoyerMooreHorspool("RAM 16GB", laptop.config) != -1){
+            r++;
+        }
+    }
+
+    return r;
+}
+
+bool Algorithm_Z(const string &p, const string &t){
+    string s = p + "$" + t;
+    int n = s.length();
+    vector<int> Z(n, 0);
+
+    int l = 0, r = 0;
+    for(int i = 1; i < n; i++){
+        if(i > r){
+            l = r = i;
+            while(r < n && s[r] == s[r-l]) r++;
+            Z[i] = r-l;
+            r--;
+        }else{
+            int k = i - l;
+            if(Z[k] < r - i + 1) {
+                Z[i] = Z[k];
+            }else{
+                l = i;
+                while(r < n && s[r] == s[r-l]) r++;
+                Z[i] = r-l;
+                r--;
+            }
+        }
+        if(Z[i] == p.length()){
+            return true;
+        }
+    }
+    return false;
+}
+
+pair<int, vector<Laptop>> F4(const vector<Laptop> &laptops){
+    int s = 0;
+    vector<Laptop> t;
+
+    for(Laptop laptop : laptops){
+        if(Algorithm_Z("SSD", laptop.config)){
+            s++;
+            t.push_back(laptop);
+        }
+    }
+
+    return {s, t};
+}
+
+int main(){
+    int n = 7;
+    vector<Laptop> laptops = {
+        {"HP", "CPU 2.5GHz upto 3.5GHz-RAM 16GB-SSD 512GB", 15000000},
+        {"ACER", "CPU 2.5GHz upto 3.5GHz-RAM 8GB-HDD 2TB", 12000000},
+        {"DELL", "CPU 2.8GHz upto 4.0GHz-RAM 16GB-SSD 1TB", 20000000},
+        {"ASUS", "CPU 2.3GHz upto 3.0GHz-RAM 4GB-SSD 256GB", 10000000},
+        {"APPLE", "CPU 3.0GHz upto 4.0GHz-RAM 16GB-SSD 512GB", 25000000},
+        {"LENOVO", "CPU 2.5GHz upto 3.5GHz-RAM 8GB-SSD 512GB", 14000000},
+        {"MSI", "CPU 2.7GHz upto 3.8GHz-RAM 32GB-HDD 1TB", 22000000}
+    };
+
+    // Tinh va tra ve r
+    int r = F3(laptops);
+    cout << "So luong may tinh co thong tin bo nho trong la 'RAM 16GB': " << r << endl;
+
+    // Tinh va tra ve s va t
+    auto result = F4(laptops);
+    int s = result.first;
+    vector<Laptop> t = result.second;
+    cout << "So luong may tinh su dung o cung loai 'SSD': " << s << endl;
+    cout << "Danh sach cac may tinh su dung o cung loai 'SSD':" << endl;
+    for(Laptop laptop : t){
+        cout << "Brand: " << laptop.brand << ", Price: " << laptop.price << endl;
+    }
 }
