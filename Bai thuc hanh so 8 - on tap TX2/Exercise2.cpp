@@ -65,7 +65,7 @@ int main(){
         {"BrandG", "Pink", 170000},
         {"BrandH", "Orange", 500000},
         {"BrandI", "Purple", 160000},
-        {"BrandJ", "Brown", 110000}
+        {"BrandJ", "Brown", 110000},
     };
 
     auto result = greedyAlgorithm(p, d);
