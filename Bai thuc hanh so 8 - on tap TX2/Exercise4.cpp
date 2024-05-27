@@ -18,6 +18,65 @@ Yêu cầu thực hiện
 thị nhãn hiệu, giá bán)
 */
 
+struct Phone{
+    string brand;
+    int size;
+    int price;
+};
+
+// ham thuc hien thuat toan Q1
+pair<int, vector<Phone>> knapsack(int s, vector<Phone> &phones){
+    int n = phones.size();
+    // tao bang phuong an
+    vector<vector<int>> dp(n+1, vector<int>(s+1, 0));
+
+    // xay dung bang phuong an
+    for(int i=1; i<=n; i++){
+        for(int j=0; j<=s; j++){
+            if(phones[i-1].size <= j){
+                dp[i][j] = max(dp[i-1][j], dp[i-1][j-phones[i-1].size] + phones[i-1].price);
+            }else{
+                dp[i][j] = dp[i-1][j];
+            }
+        }
+    }
+
+    // tim cac dien thoai can chon
+    int max_value = dp[n][s];
+    int w = s;
+    vector<Phone> selectedItems;
+    for(int i=n; i>0 && max_value > 0; i--){
+        if(max_value != dp[i-1][w]){
+            selectedItems.push_back(phones[i-1]);
+            max_value -= phones[i-1].price;
+            w -= phones[i-1].size;
+        }
+    }
+
+    return {selectedItems.size(), selectedItems};
+}
+
 int main(){
-    
+    int s = 15;  // kich thuoc s
+    int n = 7;
+    vector<Phone> d = {
+        {"BrandA", 3, 100},
+        {"BrandB", 5, 300},
+        {"BrandC", 4, 250},
+        {"BrandD", 2, 150},
+        {"BrandE", 6, 400},
+        {"BrandF", 1, 200},
+        {"BrandG", 3, 350}
+    };
+
+    auto result = knapsack(s, d);
+    int x = result.first;
+    vector<Phone> a = result.second;
+
+    cout << "So luong dien thoai co the dua vao tui: " << x << endl;
+    cout << "Danh sach cac dien thoai can dua vao tui" << endl;
+
+    for(Phone phone : a){
+        cout << "Brand: " << phone.brand << ", Price: " << phone.price << endl;
+    }
 }
