@@ -44,7 +44,7 @@ vector<int> TAlgorithm(const vector<int> &a, const vector<int> &b){
         }
     }
 
-    // Đảo ngược dãy kết quả vì chúng ta đã truy vết từ cuối lên đầu
+    // Đảo ngược dãy kết quả vì truy vết từ cuối lên đầu
     reverse(lcs.begin(), lcs.end());
     return lcs;
 }
