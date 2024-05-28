@@ -15,6 +15,50 @@ Yêu cầu thực hiện
 - Sử dụng thuật toán T để tính và trả về k và s. Thông báo kết quả
 */
 
-int main(){
+struct Seminar {
+    string topic;
+    int start;
+    int end;
+    Seminar(string t, int s, int e) : topic(t), start(s), end(e) {}
+};
 
+bool compareByTimeEnd(const Seminar &a, const Seminar &b) {
+    return a.end < b.end;
+}
+
+pair<int, vector<Seminar>> maxSeminars(vector<Seminar> &seminars){
+    sort(seminars.begin(), seminars.end(), compareByTimeEnd);
+
+    int endTime = 0;
+    vector<Seminar> selectedSeminars;
+
+    for(Seminar seminar : seminars){
+        if(seminar.start > endTime){
+            selectedSeminars.push_back(seminar);
+            endTime = seminar.end;
+        }
+    }
+
+    return {selectedSeminars.size(), selectedSeminars};
+}
+
+int main(){
+    int n = 5;
+    vector<Seminar> seminars = {
+        {"Finding a Job", 9, 10},
+        {"Improving Soft Skills", 10, 12},
+        {"Career Development", 11, 13},
+        {"Networking Tips", 13, 14},
+        {"Work-Life Balance", 14, 15}
+    };
+
+    auto result = maxSeminars(seminars);
+    int k = result.first;
+    vector<Seminar> s = result.second;
+
+    cout << "So luong hoi thao nhieu nhat co the tham du: " << k << endl;
+    cout << "Danh sach cac hoi thao:" << endl;
+    for(Seminar semi : s){
+        cout << "Chu de: " << semi.topic << " - Bat dau: " << semi.start << " - Ket thuc: " << semi.end << endl;
+    }
 }
