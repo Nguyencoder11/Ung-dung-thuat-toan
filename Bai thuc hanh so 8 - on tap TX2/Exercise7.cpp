@@ -13,6 +13,51 @@ o Cài đặt hàm biểu diễn thuật toán T.
 o Sử dụng thuật toán T để tìm c. Thông báo kết quả
 */
 
-int main(){
+vector<int> TAlgorithm(const vector<int> &a, const vector<int> &b){
+    int n = a.size();
+    int m = b.size();
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
 
+    // Tính giá trị cho bảng dp
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 1; j <= m; ++j) {
+            if (a[i - 1] == b[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            } else {
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+            }
+        }
+    }
+
+    // Truy vết để tìm dãy con chung dài nhất
+    vector<int> lcs;
+    int i = n, j = m;
+    while (i > 0 && j > 0) {
+        if (a[i - 1] == b[j - 1]) {
+            lcs.push_back(a[i - 1]);
+            --i;
+            --j;
+        } else if (dp[i - 1][j] > dp[i][j - 1]) {
+            --i;
+        } else {
+            --j;
+        }
+    }
+
+    // Đảo ngược dãy kết quả vì chúng ta đã truy vết từ cuối lên đầu
+    reverse(lcs.begin(), lcs.end());
+    return lcs;
+}
+
+int main(){
+    int n = 5, m = 6;
+    vector<int> a = {1,2,3,4,1};
+    vector<int> b = {3,4,1,2,1,3};
+
+    vector<int> c = TAlgorithm(a, b);
+    cout << "Day con chung dai nhat: ";
+    for(int num : c){
+        cout << num << " ";
+    }
+    cout << endl;
 }
